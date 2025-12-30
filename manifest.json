@@ -1,0 +1,11 @@
+{
+    "name": "密折司 Prompt Inspector",
+    "display_name": "密折司",
+    "version": "1.0.0",
+    "author": "Wx-2025 (Extracted by Assistant)",
+    "description": "Prompt检查器 - 在发送生成请求前查看和编辑完整的Prompt内容，支持Token计数、搜索高亮等功能。",
+    "minSillyTavernVersion": "1.10.0",
+    "requires": [],
+    "homePage": "https://github.com/Wx-2025/ST-Amily2-Chat-Optimisation.git",
+    "js": "index.js"
+}

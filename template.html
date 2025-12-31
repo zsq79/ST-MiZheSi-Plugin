@@ -3,10 +3,26 @@
         <i class="fas fa-scroll"></i>
         <h3>密折司奏报</h3>
     </div>
-    <div class="mizhesi-search-container">
-        <input type="text" id="mizhesi-search-input" placeholder="搜索内容...">
-        <button id="mizhesi-search-button" class="menu_button" title="搜索"><i class="fa-solid fa-magnifying-glass"></i></button>
-        <button id="mizhesi-clear-button" class="menu_button" title="清除高亮"><i class="fa-solid fa-xmark"></i></button>
+    <div class="mizhesi-toolbar">
+        <div class="mizhesi-search-container">
+            <input type="text" id="mizhesi-search-input" placeholder="搜索内容...">
+            <button id="mizhesi-search-button" class="menu_button" title="搜索"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <button id="mizhesi-clear-button" class="menu_button" title="清除高亮"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="mizhesi-view-options">
+            <button id="mizhesi-merge-btn" class="menu_button mizhesi-toggle-btn active" title="合并连续同类消息">
+                <i class="fa-solid fa-layer-group"></i> 合并
+            </button>
+            <button id="mizhesi-compact-btn" class="menu_button mizhesi-toggle-btn" title="紧凑模式">
+                <i class="fa-solid fa-compress"></i> 紧凑
+            </button>
+            <button id="mizhesi-expand-all-btn" class="menu_button" title="全部展开">
+                <i class="fa-solid fa-expand"></i>
+            </button>
+            <button id="mizhesi-collapse-all-btn" class="menu_button" title="全部折叠">
+                <i class="fa-solid fa-compress-alt"></i>
+            </button>
+        </div>
     </div>
     <div id="mizhesi-editor-container" class="mizhesi-editor-container">
 
@@ -36,76 +52,17 @@
         margin: 0;
         font-weight: 600;
     }
-    .mizhesi-editor-container {
-        flex-grow: 1;
-        overflow-y: auto;
-        padding-right: 10px;
-    }
-    .mizhesi-message-block {
-        border: 1px solid #444;
-        border-radius: 8px;
-        margin-bottom: 15px;
-        background-color: #2b2d31;
-    }
-    .mizhesi-message-header {
-        padding: 8px 12px;
-        background-color: #3a3d42;
-        border-top-left-radius: 7px;
-        border-top-right-radius: 7px;
-        font-weight: bold;
-        font-size: 0.9em;
-        cursor: pointer; 
-        position: relative;
-    }
-    .mizhesi-message-header::after {
-        content: '▶'; 
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        transition: transform 0.2s ease-in-out;
-    }
-    .mizhesi-message-block.expanded .mizhesi-message-header::after {
-        transform: translateY(-50%) rotate(90deg);
-    }
-    .mizhesi-message-content {
-        padding: 12px;
-        display: none; 
-    }
-    .mizhesi-message-content textarea {
-        width: 100%;
-        min-height: 80px;
-        height: auto;
-        background-color: #202225;
-        color: #ccc;
-        border: 1px solid #555;
-        border-radius: 4px;
-        padding: 10px;
-        box-sizing: border-box;
-        font-size: 0.95em;
-        line-height: 1.5;
-        resize: vertical;
-    }
-
-    .mizhesi-message-block[data-role="system"] .mizhesi-message-header {
-        background-color: #5865f2; 
-        color: white;
-    }
-    .mizhesi-message-block[data-role="user"] .mizhesi-message-header {
-        background-color: #57f287; 
-        color: #060607;
-    }
-    .mizhesi-message-block[data-role="assistant"] .mizhesi-message-header {
-        background-color: #f25757; 
-        color: white;
-    }
-    .mizhesi-highlight {
-        background-color: rgb(235, 7, 185);
-        color: black;
+    .mizhesi-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 10px;
+        align-items: center;
     }
     .mizhesi-search-container {
         display: flex;
-        margin-bottom: 10px;
+        flex: 1;
+        min-width: 200px;
     }
     .mizhesi-search-container input {
         flex-grow: 1;
@@ -116,8 +73,188 @@
         padding: 4px 8px;
         margin-right: 5px;
     }
+    .mizhesi-view-options {
+        display: flex;
+        gap: 5px;
+    }
+    .mizhesi-toggle-btn.active {
+        background-color: #5865f2 !important;
+        color: white !important;
+    }
+    .mizhesi-editor-container {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding-right: 10px;
+    }
+    
+    /* 默认模式 */
+    .mizhesi-message-block {
+        border: 1px solid #444;
+        border-radius: 8px;
+        margin-bottom: 8px;
+        background-color: #2b2d31;
+    }
+    
+    /* 紧凑模式 */
+    .mizhesi-editor-container.compact .mizhesi-message-block {
+        margin-bottom: 2px;
+        border-radius: 4px;
+    }
+    .mizhesi-editor-container.compact .mizhesi-message-header {
+        padding: 4px 10px;
+        font-size: 0.85em;
+    }
+    .mizhesi-editor-container.compact .mizhesi-message-content {
+        padding: 8px;
+    }
+    .mizhesi-editor-container.compact .mizhesi-message-content textarea {
+        min-height: 50px;
+        padding: 6px;
+        font-size: 0.9em;
+    }
+    
+    .mizhesi-message-header {
+        padding: 6px 12px;
+        background-color: #3a3d42;
+        border-top-left-radius: 7px;
+        border-top-right-radius: 7px;
+        font-weight: bold;
+        font-size: 0.85em;
+        cursor: pointer; 
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .mizhesi-message-header::after {
+        content: '▶'; 
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: transform 0.2s ease-in-out;
+        font-size: 0.8em;
+    }
+    .mizhesi-message-block.expanded .mizhesi-message-header::after {
+        transform: translateY(-50%) rotate(90deg);
+    }
+    .mizhesi-message-content {
+        padding: 10px;
+        display: none; 
+    }
+    .mizhesi-message-content textarea {
+        width: 100%;
+        min-height: 60px;
+        height: auto;
+        background-color: #202225;
+        color: #ccc;
+        border: 1px solid #555;
+        border-radius: 4px;
+        padding: 8px;
+        box-sizing: border-box;
+        font-size: 0.9em;
+        line-height: 1.4;
+        resize: vertical;
+    }
+    
+    /* 合并消息组样式 */
+    .mizhesi-merged-group {
+        border: 1px solid #444;
+        border-radius: 8px;
+        margin-bottom: 8px;
+        background-color: #2b2d31;
+        overflow: hidden;
+    }
+    .mizhesi-merged-group .mizhesi-group-header {
+        padding: 6px 12px;
+        font-weight: bold;
+        font-size: 0.85em;
+        cursor: pointer;
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .mizhesi-merged-group .mizhesi-group-header::after {
+        content: '▶'; 
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: transform 0.2s ease-in-out;
+        font-size: 0.8em;
+    }
+    .mizhesi-merged-group.expanded .mizhesi-group-header::after {
+        transform: translateY(-50%) rotate(90deg);
+    }
+    .mizhesi-merged-group .mizhesi-group-content {
+        display: none;
+        border-top: 1px solid #444;
+    }
+    .mizhesi-merged-group.expanded .mizhesi-group-content {
+        display: block;
+    }
+    .mizhesi-merged-group .mizhesi-sub-message {
+        border-bottom: 1px solid #333;
+        padding: 8px 12px;
+    }
+    .mizhesi-merged-group .mizhesi-sub-message:last-child {
+        border-bottom: none;
+    }
+    .mizhesi-merged-group .mizhesi-sub-header {
+        font-size: 0.8em;
+        color: #aaa;
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .mizhesi-merged-group textarea {
+        width: 100%;
+        min-height: 40px;
+        background-color: #202225;
+        color: #ccc;
+        border: 1px solid #555;
+        border-radius: 4px;
+        padding: 6px;
+        box-sizing: border-box;
+        font-size: 0.85em;
+        line-height: 1.4;
+        resize: vertical;
+    }
+    
+    /* 角色颜色 */
+    .mizhesi-message-block[data-role="system"] .mizhesi-message-header,
+    .mizhesi-merged-group[data-role="system"] .mizhesi-group-header {
+        background-color: #5865f2; 
+        color: white;
+    }
+    .mizhesi-message-block[data-role="user"] .mizhesi-message-header,
+    .mizhesi-merged-group[data-role="user"] .mizhesi-group-header {
+        background-color: #57f287; 
+        color: #060607;
+    }
+    .mizhesi-message-block[data-role="assistant"] .mizhesi-message-header,
+    .mizhesi-merged-group[data-role="assistant"] .mizhesi-group-header {
+        background-color: #f25757; 
+        color: white;
+    }
+    
+    .mizhesi-highlight {
+        background-color: rgb(235, 7, 185);
+        color: black;
+    }
     .mizhesi-highlight-border {
         border: 2px solid #ff00dd !important;
         box-shadow: 0 0 10px #ff00c8;
+    }
+    
+    /* 消息计数徽章 */
+    .mizhesi-count-badge {
+        background-color: rgba(0,0,0,0.3);
+        padding: 2px 6px;
+        border-radius: 10px;
+        font-size: 0.75em;
+        font-weight: normal;
     }
 </style>
